@@ -1,15 +1,15 @@
 package tdfr;
 
 import org.jgrapht.graph.DefaultEdge;
+import javax.vecmath.Point3d;
 
 public class Edge extends DefaultEdge {
 
 	public float getLength() {
 		float length= 0;
-		float x = ((Node)getSource()).getX()- ((Node)getTarget()).getX();
-		float y = ((Node)getSource()).getY()- ((Node)getTarget()).getY();
-		float z = ((Node)getSource()).getZ()- ((Node)getTarget()).getZ();
-		length = (float) Math.sqrt(  Math.pow(x,2) + Math.pow(y,2) + Math.pow(z,2));
+		Point3d n1 = ((Node)getSource()).getCoordinates();
+		Point3d n2 = ((Node)getTarget()).getCoordinates();
+		length = (float) n1.distance(n2);
 		return length;
 	}
 	

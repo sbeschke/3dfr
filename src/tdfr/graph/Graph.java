@@ -7,7 +7,7 @@ public class Graph extends org.jgrapht.graph.DirectedMultigraph<tdfr.Node, tdfr.
 	private static final long serialVersionUID = 1L;
 
 	public Graph() {
-		super(Edge.class);
+		super(tdfr.Edge.class);
 	}
 	
 }

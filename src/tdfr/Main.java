@@ -14,6 +14,8 @@ import tdfr.importer.JsonImporter;
 import java.awt.FileDialog;
 import java.awt.Frame;
 import java.io.File;
+import javax.vecmath.Point3d;
+import javax.vecmath.Tuple3d;
 import java.util.Vector;
 import java.util.Set;
 import java.util.Random;
@@ -40,52 +42,58 @@ public class Main extends PApplet {
 	}
 	
 	private float COLUMBFORCECONSTANT=1;
+	private float FEDERCONSTANT=1;
 	
 	float coulumb_force(Node i, Node j)
 	{
-		float dx = i.getX()-j.getX();
-		float dy = i.getY()-j.getY();
-		//float dz = i.getZ()-j.getZ();
-		return this.COLUMBFORCECONSTANT*sqrt(dx*dx+dy*dy);//+dz*dz
+		float distance = (float) i.getCoordinates().distance(j.getCoordinates());
+		return this.COLUMBFORCECONSTANT*distance;
 	}
 	
-	Point3d hook_force(Node i, Edge edge)
+	float hook_force(Edge edge)
 	{
-		float attraction = edge.getLength();
-		Point3d direction = new Point3d (0,0,0);
-		//Node direction = (edge.getTarget()).getCoordinates();
-		//return direction*attraction;
-		return direction;
+		return FEDERCONSTANT*edge.getLength();
 	}
 	
 	void updateForces() {
 		Set<Node> nodes; 
 		Object[] nodesA;
-		float totalkineticenergy = 0;
-		float damping = 0;
+		//Set<Edge> edges = graph.edgeSet();
+		Point3d totalkineticenergy = new Point3d( 0, 0, 0);
+		
+		//damping \in 0;1
+		float damping = 1;
 		//TODO set better value 
-		while (totalkineticenergy > 1) {
+		while (totalkineticenergy.x < 100) {
 			nodes = graph.vertexSet();
 			nodesA = nodes.toArray();
+			
+			for (Node n: nodes) {
+				for (Edge e: graph.edgesOf(n)) 
+				{
+					float hook = hook_force(e);
+					n.addToVelocity(new Point3d(hook, hook, hook));
+				}
+			}
+			
 			for (int i = 0; i< nodesA.length; i++) {
 				Node node = (Node) nodesA[i];
-				nodes.remove(nodesA[i]);
-				float netforce=0;
+				//nodes.remove(nodesA[i]);
+				float netforce= 0;
 				for (Node onode: nodes) {
 					netforce = coulumb_force(onode, node);
-				}
+				}			
 				
-				for(Edge e: node.Edges()) {
-					hook_force(node, e);
-				}				
+				netforce *= damping;
 				
-				node.setVelocity( (node.getVelocity() + netforce)*damping);
-				
+				node.addToVelocity(new Point3d(netforce, netforce, netforce));
+			
 				node.adaptPositions();
 				
-				totalkineticenergy += Math.pow(node.getVelocity(),2);
-				
-				nodes.add((Node)nodesA[i]);
+				//FIXME
+				totalkineticenergy.scaleAdd((double) 0.000001, node.getCoordinates());
+				System.out.println("working: " + totalkineticenergy);
+				//nodes.add((Node)nodesA[i]);
 			}
 			
 			
@@ -136,7 +144,6 @@ public class Main extends PApplet {
 		
 		stroke(255);
 		strokeWeight(2);
-		updateForces();
 		for(Edge edge : graph.edgeSet()) {
 			Node src = graph.getEdgeSource(edge);
 			Node tgt = graph.getEdgeTarget(edge);
@@ -144,7 +151,8 @@ public class Main extends PApplet {
 			line(src.getX(), src.getY(), 0, tgt.getX(), tgt.getY(), 0);
 			
 		}
-		//strokeWeight(0);
+		//updateForces();
+
 	}
 
 	/*public void mouseDragged() 
@@ -172,4 +180,5 @@ public class Main extends PApplet {
 		});
 	}
 	
+		
 }
