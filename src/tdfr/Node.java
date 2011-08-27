@@ -1,10 +1,21 @@
 package tdfr;
 
+import java.util.Vector;
 import javax.vecmath.Point3d;
 
 public class Node {
 	private float x = 0;
 	private float velocity = 0;
+	
+	private Vector<Edge> edges;
+	
+	public void addEdge(Edge e) {
+		edges.add(e);
+	}
+	
+	public Vector<Edge> Edges() {
+		return edges;
+	}
 	
 	public float getVelocity() {
 		return velocity;
@@ -55,6 +66,7 @@ public class Node {
 		this.y = y;
 		this.z = z;
 		this.velocity = 0;
+		edges = new Vector<Edge>();
 	}
 	
 	

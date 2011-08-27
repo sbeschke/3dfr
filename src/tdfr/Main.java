@@ -28,7 +28,9 @@ public class Main extends PApplet {
 		Set<Node> nodes = graph.vertexSet();
 		Object[] nodesA = nodes.toArray();
 		for (int i = 0; i< 10; i++) {
-			graph.addEdge((Node) nodesA[rand.nextInt(10)], (Node) nodesA[rand.nextInt(10)]);
+			Node node1 = (Node) nodesA[rand.nextInt(10)];
+			Node node2 = (Node) nodesA[rand.nextInt(10)];
+			graph.addEdge(node1, node2);
 		}
 
 	}
@@ -69,8 +71,9 @@ public class Main extends PApplet {
 					netforce = coulumb_force(onode, node);
 				}
 				
-				//hoook-power!!
-				
+				for(Edge e: node.Edges()) {
+					hook_force(node, e);
+				}				
 				
 				node.setVelocity( (node.getVelocity() + netforce)*damping);
 				
