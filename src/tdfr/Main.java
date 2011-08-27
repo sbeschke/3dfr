@@ -60,8 +60,9 @@ public class Main extends PApplet {
 					netforce = coulumb_force(onode, node);
 				}
 				
-				//hoook-power!!
-				
+				for(Edge e: node.Edges()) {
+					hook_force(node, e);
+				}				
 				
 				node.setVelocity( (node.getVelocity() + netforce)*damping);
 				
