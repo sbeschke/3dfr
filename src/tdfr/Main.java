@@ -26,6 +26,7 @@ public class Main extends PApplet {
 	}
 	
 	private float COLUMBFORCECONSTANT=1;
+	private float FEDERCONSTANT=1;
 	
 	float coulumb_force(Node i, Node j)
 	{
@@ -33,30 +34,30 @@ public class Main extends PApplet {
 		return this.COLUMBFORCECONSTANT*distance;
 	}
 	
-	Point3d hook_force(Node i, Edge edge)
+	float hook_force(Edge edge)
 	{
-		float attraction = edge.getLength();
-		Point3d direction = new Point3d(0,0,0);
-		//Node direction = (edge.getTarget()).getCoordinates();
-		//return direction*attraction;
-		return direction;
+		return FEDERCONSTANT*edge.getLength();
 	}
 	
 	void updateForces() {
 		Set<Node> nodes; 
 		Object[] nodesA;
+		Set<Edge> edges = graph.edgeSet();
 		float totalkineticenergy = 0;
-		float damping = 0;
+		
+		//damping \in 0;1
+		float damping = 1;
 		//TODO set better value 
 		while (totalkineticenergy > 1) {
 			nodes = graph.vertexSet();
 			nodesA = nodes.toArray();
 			
-			for (Node node: nodes) {
-				Edge e;
-				Point3d t = hook_force(node,e);
-				t.scale((double) damping);
-				node.addToVelocity(t);
+			for (Node n: nodes) {
+				for (Edge e: graph.edgesOf(n)) 
+				{
+					float hook = hook_force(e);
+					n.addToVelocity(new Point3d(hook, hook, hook));
+				}
 			}
 			
 			for (int i = 0; i< nodesA.length; i++) {
@@ -119,7 +120,7 @@ public class Main extends PApplet {
 		stroke(255);
 		strokeWeight(2);
 		updateForces();
-		for(DefaultEdge edge : graph.edgeSet()) {
+		for(Edge edge : graph.edgeSet()) {
 			Node src = graph.getEdgeSource(edge);
 			Node tgt = graph.getEdgeTarget(edge);
 			
