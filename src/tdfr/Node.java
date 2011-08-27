@@ -1,37 +1,35 @@
 package tdfr;
 
 import java.util.Vector;
+import javax.vecmath.Tuple3d;
 import javax.vecmath.Point3d;
 
 public class Node {
 	private float x = 0;
-	private float velocity = 0;
+	private Point3d velocity = new Point3d(0,0,0);
 	
 	private Vector<Edge> edges;
 	
-	public void addEdge(Edge e) {
-		edges.add(e);
+	public void addToVelocity(Point3d hook) {
+		velocity.add((Tuple3d)hook);
 	}
+
 	
-	public Vector<Edge> Edges() {
-		return edges;
-	}
-	
-	public float getVelocity() {
+	public Point3d getVelocity() {
 		return velocity;
 	}
 	
 	public void adaptPositions() {
-		x += velocity;
-		y += velocity;
-		z += velocity;
+		x += velocity.x;
+		y += velocity.y;
+		z += velocity.z;
 	}
 	
 	public Point3d getCoordinates() {
 		return new Point3d(x,y,z);
 	}
 	
-	public void setVelocity(float velocity) {
+	public void setVelocity(Point3d velocity) {
 		this.velocity= velocity;
 	}
 	
@@ -61,13 +59,12 @@ public class Node {
 	public float getZ() {
 		return z;
 	}
+	
 	public Node(float x, float y, float z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		this.velocity = 0;
-		edges = new Vector<Edge>();
-	}
+		}
 	
 	
 }
