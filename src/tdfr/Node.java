@@ -19,10 +19,19 @@ public class Node {
 	public void setY(float y) {
 		this.y = y;
 	}
+	
+	private float z = 0;
+	public void setZ(float z) {
+		this.z = z;
+	}
 
-	public Node(float x, float y) {
+	public float getZ() {
+		return z;
+	}
+	public Node(float x, float y, float z) {
 		this.x = x;
 		this.y = y;
+		this.z = z;
 	}
 	
 	

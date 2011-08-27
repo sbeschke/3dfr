@@ -7,6 +7,7 @@ import org.jgrapht.graph.SimpleGraph;
 import processing.core.*;
 import processing.opengl.*;
 import java.util.Vector;
+import java.util.Set;
 import java.util.Random;
 import java.util.ListIterator;
 
@@ -18,14 +19,18 @@ public class Main extends PApplet {
 	
 	public void setupGraph() {
 		graph = new SimpleGraph<Node, DefaultEdge>(DefaultEdge.class);
-		Node node1 = new Node(10, 10);
-		Node node2 = new Node(30, 10);
-		Node node3 = new Node(10, 30);
+		Random rand = new Random();
+		for (int i =0; i <10; i++) {
+		Node node1 = new Node(rand.nextFloat()*400, rand.nextFloat()*400, rand.nextFloat()*400);
 		graph.addVertex(node1);
-		graph.addVertex(node2);
-		graph.addVertex(node3);
-		graph.addEdge(node1, node2);
-		graph.addEdge(node1, node3);
+		}
+
+		Set<Node> nodes = graph.vertexSet();
+		Object[] nodesA = nodes.toArray();
+		for (int i = 0; i< 10; i++) {
+			graph.addEdge((Node) nodesA[rand.nextInt(10)], (Node) nodesA[rand.nextInt(10)]);
+		}
+
 		
 	}
 
