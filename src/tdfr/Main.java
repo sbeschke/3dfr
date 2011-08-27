@@ -22,7 +22,7 @@ public class Main extends PApplet {
 	Graph graph;
 		
 	public void setupGraph() {
-		graph = (new JsonImporter()).loadFile("data/sotu_small.json");		
+		graph = (new JsonImporter()).loadFile("../data/sotu_small.json");		
 	}
 	
 	private float COLUMBFORCECONSTANT=1;
@@ -42,13 +42,13 @@ public class Main extends PApplet {
 	void updateForces() {
 		Set<Node> nodes; 
 		Object[] nodesA;
-		Set<Edge> edges = graph.edgeSet();
-		float totalkineticenergy = 0;
+		//Set<Edge> edges = graph.edgeSet();
+		Point3d totalkineticenergy = new Point3d( 0, 0, 0);
 		
 		//damping \in 0;1
 		float damping = 1;
 		//TODO set better value 
-		while (totalkineticenergy > 1) {
+		while (totalkineticenergy.x < 100) {
 			nodes = graph.vertexSet();
 			nodesA = nodes.toArray();
 			
@@ -62,7 +62,7 @@ public class Main extends PApplet {
 			
 			for (int i = 0; i< nodesA.length; i++) {
 				Node node = (Node) nodesA[i];
-				nodes.remove(nodesA[i]);
+				//nodes.remove(nodesA[i]);
 				float netforce= 0;
 				for (Node onode: nodes) {
 					netforce = coulumb_force(onode, node);
@@ -75,9 +75,9 @@ public class Main extends PApplet {
 				node.adaptPositions();
 				
 				//FIXME
-				totalkineticenergy += node.getCoordinates().distance(node.getCoordinates());
-				
-				nodes.add((Node)nodesA[i]);
+				totalkineticenergy.scaleAdd((double) 0.000001, node.getCoordinates());
+				System.out.println("working: " + totalkineticenergy);
+				//nodes.add((Node)nodesA[i]);
 			}
 			
 			
@@ -119,7 +119,6 @@ public class Main extends PApplet {
 		
 		stroke(255);
 		strokeWeight(2);
-		updateForces();
 		for(Edge edge : graph.edgeSet()) {
 			Node src = graph.getEdgeSource(edge);
 			Node tgt = graph.getEdgeTarget(edge);
@@ -127,17 +126,10 @@ public class Main extends PApplet {
 			line(src.getX(), src.getY(), 0, tgt.getX(), tgt.getY(), 0);
 			
 		}
-		//strokeWeight(0);
+		updateForces();
+
 	}
 
-	/*public void mouseDragged() 
-	{
-	  value = value + 5;
-	  if (value > 200) {
-	    value = 0;
-	  }
-	}*/
 	
-	
-	
+		
 }
