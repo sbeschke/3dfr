@@ -10,6 +10,8 @@ import java.util.Vector;
 import java.util.Set;
 import java.util.Random;
 import java.util.ListIterator;
+import javax.vecmath.Point3d;
+//http://mirrors.ibiblio.org/pub/mirrors/maven/java3d/jars/vecmath-1.3.1.jar
 
 public class Main extends PApplet {
 
@@ -41,6 +43,13 @@ public class Main extends PApplet {
 		float dy = i.getY()-j.getY();
 		//float dz = i.getZ()-j.getZ();
 		return this.COLUMBFORCECONSTANT*sqrt(dx*dx+dy*dy);//+dz*dz
+	}
+	
+	Point3d hook_force(Node i, DefaultEdge e)
+	{
+		float attcation = edge.getLength();
+		Point3d direction = edge.getdirection(i);
+		return direction*attaction;
 	}
 	
 	void updateForces() {
