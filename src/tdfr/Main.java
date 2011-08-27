@@ -22,22 +22,7 @@ public class Main extends PApplet {
 	Graph graph;
 		
 	public void setupGraph() {
-		/*graph = new SimpleGraph<Node, Edge>(Edge.class);
-		Random rand = new Random();
-		for (int i =0; i <10; i++) {
-		Node node1 = new Node(rand.nextFloat()*400, rand.nextFloat()*400, rand.nextFloat()*400);
-		graph.addVertex(node1);
-		}
-
-		Set<Node> nodes = graph.vertexSet();
-		Object[] nodesA = nodes.toArray();
-		for (int i = 0; i< 10; i++) {
-			Node node1 = (Node) nodesA[rand.nextInt(10)];
-			Node node2 = (Node) nodesA[rand.nextInt(10)];
-			graph.addEdge(node1, node2);
-		}*/
-
-		graph = (new JsonImporter()).loadFile("data/jsonex.json");		
+		graph = (new JsonImporter()).loadFile("data/sotu_small.json");		
 	}
 	
 	private float COLUMBFORCECONSTANT=1;
