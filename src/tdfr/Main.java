@@ -33,7 +33,7 @@ public class Main extends PApplet {
 	private ControlP5 controlP5;
 		
 	public static void main(String[] args) {
-		PApplet.main(new String[] { "--present", "tdfr.Main" });
+		PApplet.main(new String[] { "tdfr.Main" });
 	}
 	
 	public void setupGraph() {
