@@ -15,12 +15,10 @@ import javax.vecmath.Point3d;
 
 public class Main extends PApplet {
 
-	AbstractGraph<Node, DefaultEdge> graph;
-	
-	private static final long serialVersionUID = 1L;
-	
+	AbstractGraph<Node, Edge> graph;
+		
 	public void setupGraph() {
-		graph = new SimpleGraph<Node, DefaultEdge>(DefaultEdge.class);
+		graph = new SimpleGraph<Node, Edge>(Edge.class);
 		Random rand = new Random();
 		for (int i =0; i <10; i++) {
 		Node node1 = new Node(rand.nextFloat()*400, rand.nextFloat()*400, rand.nextFloat()*400);
