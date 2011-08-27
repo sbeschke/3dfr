@@ -9,8 +9,11 @@ import processing.opengl.*;
 import tdfr.importer.JsonImporter;
 
 import java.util.Vector;
+import java.util.Set;
 import java.util.Random;
 import java.util.ListIterator;
+import javax.vecmath.Point3d;
+//http://mirrors.ibiblio.org/pub/mirrors/maven/java3d/jars/vecmath-1.3.1.jar
 
 public class Main extends PApplet {
 
@@ -20,6 +23,72 @@ public class Main extends PApplet {
 	
 	public void setupGraph() {
 		graph = (new JsonImporter()).loadFile("data/jsonex.json");		
+
+		/*graph = new SimpleGraph<Node, DefaultEdge>(DefaultEdge.class);
+		Random rand = new Random();
+		for (int i =0; i <10; i++) {
+		Node node1 = new Node(rand.nextFloat()*400, rand.nextFloat()*400, rand.nextFloat()*400);
+		graph.addVertex(node1);
+		}
+
+		Set<Node> nodes = graph.vertexSet();
+		Object[] nodesA = nodes.toArray();
+		for (int i = 0; i< 10; i++) {
+			graph.addEdge((Node) nodesA[rand.nextInt(10)], (Node) nodesA[rand.nextInt(10)]);
+		}*/
+
+	}
+	
+	private float COLUMBFORCECONSTANT=1;
+	
+	float coulumb_force(Node i, Node j)
+	{
+		float dx = i.getX()-j.getX();
+		float dy = i.getY()-j.getY();
+		//float dz = i.getZ()-j.getZ();
+		return this.COLUMBFORCECONSTANT*sqrt(dx*dx+dy*dy);//+dz*dz
+	}
+	
+	Point3d hook_force(Node i, Edge edge)
+	{
+		float attraction = edge.getLength();
+		Point3d direction = new Point3d (0,0,0);
+		//Node direction = (edge.getTarget()).getCoordinates();
+		//return direction*attraction;
+		return direction;
+	}
+	
+	void updateForces() {
+		Set<Node> nodes; 
+		Object[] nodesA;
+		float totalkineticenergy = 0;
+		float damping = 0;
+		//TODO set better value 
+		while (totalkineticenergy > 1) {
+			nodes = graph.vertexSet();
+			nodesA = nodes.toArray();
+			for (int i = 0; i< nodesA.length; i++) {
+				Node node = (Node) nodesA[i];
+				nodes.remove(nodesA[i]);
+				float netforce=0;
+				for (Node onode: nodes) {
+					netforce = coulumb_force(onode, node);
+				}
+				
+				//hoook-power!!
+				
+				
+				node.setVelocity( (node.getVelocity() + netforce)*damping);
+				
+				node.adaptPositions();
+				
+				totalkineticenergy += Math.pow(node.getVelocity(),2);
+				
+				nodes.add((Node)nodesA[i]);
+			}
+			
+			
+		}
 	}
 
 	public void setup() {
@@ -57,7 +126,7 @@ public class Main extends PApplet {
 		
 		stroke(255);
 		strokeWeight(2);
-		
+		updateForces();
 		for(DefaultEdge edge : graph.edgeSet()) {
 			Node src = graph.getEdgeSource(edge);
 			Node tgt = graph.getEdgeTarget(edge);
