@@ -21,7 +21,7 @@ public class Main extends PApplet {
 	Graph graph;
 		
 	public void setupGraph() {
-		graph = (new JsonImporter()).loadFile("data/jsonex.json");		
+		graph = (new JsonImporter()).loadFile("data/sotu_small.json");		
 	}
 	
 	private float COLUMBFORCECONSTANT=1;

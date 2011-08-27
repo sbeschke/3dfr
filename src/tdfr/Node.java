@@ -50,6 +50,11 @@ public class Node {
 	public float getZ() {
 		return z;
 	}
+	
+	public Node() {
+	
+	}
+	
 	public Node(float x, float y, float z) {
 		this.x = x;
 		this.y = y;
