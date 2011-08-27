@@ -1,5 +1,7 @@
 package tdfr;
 
+import javax.vecmath.Point3d;
+
 public class Node {
 	private float x = 0;
 	private float velocity = 0;
@@ -12,6 +14,10 @@ public class Node {
 		x += velocity;
 		y += velocity;
 		z += velocity;
+	}
+	
+	public Point3d getCoordinates() {
+		return new Point3d(x,y,z);
 	}
 	
 	public void setVelocity(float velocity) {

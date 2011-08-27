@@ -45,11 +45,13 @@ public class Main extends PApplet {
 		return this.COLUMBFORCECONSTANT*sqrt(dx*dx+dy*dy);//+dz*dz
 	}
 	
-	Point3d hook_force(Node i, DefaultEdge e)
+	Point3d hook_force(Node i, Edge edge)
 	{
-		float attcation = edge.getLength();
-		Point3d direction = edge.getdirection(i);
-		return direction*attaction;
+		float attraction = edge.getLength();
+		Point3d direction = new Point3d (0,0,0);
+		//Node direction = (edge.getTarget()).getCoordinates();
+		//return direction*attraction;
+		return direction;
 	}
 	
 	void updateForces() {
