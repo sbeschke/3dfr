@@ -6,6 +6,9 @@ import org.jgrapht.graph.SimpleGraph;
 
 import processing.core.*;
 import processing.opengl.*;
+import tdfr.graph.Graph;
+import tdfr.importer.JsonImporter;
+
 import java.util.Vector;
 import java.util.Set;
 import java.util.Random;
@@ -15,10 +18,10 @@ import javax.vecmath.Point3d;
 
 public class Main extends PApplet {
 
-	AbstractGraph<Node, Edge> graph;
+	Graph graph;
 		
 	public void setupGraph() {
-		graph = new SimpleGraph<Node, Edge>(Edge.class);
+		/*graph = new SimpleGraph<Node, Edge>(Edge.class);
 		Random rand = new Random();
 		for (int i =0; i <10; i++) {
 		Node node1 = new Node(rand.nextFloat()*400, rand.nextFloat()*400, rand.nextFloat()*400);
@@ -31,8 +34,9 @@ public class Main extends PApplet {
 			Node node1 = (Node) nodesA[rand.nextInt(10)];
 			Node node2 = (Node) nodesA[rand.nextInt(10)];
 			graph.addEdge(node1, node2);
-		}
+		}*/
 
+		graph = (new JsonImporter()).loadFile("data/jsonex.json");		
 	}
 	
 	private float COLUMBFORCECONSTANT=1;
