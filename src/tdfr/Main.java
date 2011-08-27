@@ -4,24 +4,39 @@ import org.jgrapht.graph.AbstractGraph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
 
+import controlP5.ControlP5;
+
 import processing.core.*;
 import processing.opengl.*;
 import tdfr.graph.Graph;
 import tdfr.importer.JsonImporter;
 
+import java.awt.FileDialog;
+import java.awt.Frame;
+import java.io.File;
 import java.util.Vector;
 import java.util.Set;
 import java.util.Random;
 import java.util.ListIterator;
+
+import javax.swing.JFileChooser;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.vecmath.Point3d;
 //http://mirrors.ibiblio.org/pub/mirrors/maven/java3d/jars/vecmath-1.3.1.jar
 
 public class Main extends PApplet {
 
-	Graph graph;
+	private Graph graph;
+	private ControlP5 controlP5;
 		
+	public static void main(String[] args) {
+		PApplet.main(new String[] { "--present", "tdfr.Main" });
+	}
+	
 	public void setupGraph() {
-		graph = (new JsonImporter()).loadFile("data/sotu_small.json");		
+		//graph = (new JsonImporter()).loadFile("data/sotu_small.json");
+		graph = new Graph();
 	}
 	
 	private float COLUMBFORCECONSTANT=1;
@@ -81,6 +96,15 @@ public class Main extends PApplet {
 		
 		size(400,400, OPENGL);
 		background(0);
+		
+		try { 
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); 
+		} catch (Exception e) { 
+			e.printStackTrace();  
+		}
+		
+		controlP5 = new ControlP5(this);
+		controlP5.addButton("loadButton");
 		setupGraph();
 	}
 	
@@ -113,7 +137,7 @@ public class Main extends PApplet {
 		stroke(255);
 		strokeWeight(2);
 		updateForces();
-		for(DefaultEdge edge : graph.edgeSet()) {
+		for(Edge edge : graph.edgeSet()) {
 			Node src = graph.getEdgeSource(edge);
 			Node tgt = graph.getEdgeTarget(edge);
 			
@@ -131,6 +155,21 @@ public class Main extends PApplet {
 	  }
 	}*/
 	
-	
+	public void loadButton(int theValue) {
+		
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			public void run() {
+				noLoop();
+				
+				FileDialog fc = new FileDialog((Frame)null);
+				fc.setVisible(true);
+				File file = new File(fc.getDirectory(), fc.getFile());
+				(new JsonImporter()).loadFile(file, graph);
+				
+				loop();
+			}
+		});
+	}
 	
 }
