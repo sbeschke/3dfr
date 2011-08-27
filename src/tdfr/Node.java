@@ -2,6 +2,22 @@ package tdfr;
 
 public class Node {
 	private float x = 0;
+	private float velocity = 0;
+	
+	public float getVelocity() {
+		return velocity;
+	}
+	
+	public void adaptPositions() {
+		x += velocity;
+		y += velocity;
+		z += velocity;
+	}
+	
+	public void setVelocity(float velocity) {
+		this.velocity= velocity;
+	}
+	
 	public float getX() {
 		return x;
 	}
@@ -32,6 +48,7 @@ public class Node {
 		this.x = x;
 		this.y = y;
 		this.z = z;
+		this.velocity = 0;
 	}
 	
 	

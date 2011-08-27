@@ -31,7 +31,49 @@ public class Main extends PApplet {
 			graph.addEdge((Node) nodesA[rand.nextInt(10)], (Node) nodesA[rand.nextInt(10)]);
 		}
 
-		
+	}
+	
+	private float COLUMBFORCECONSTANT=1;
+	
+	float coulumb_force(Node i, Node j)
+	{
+		float dx = i.getX()-j.getX();
+		float dy = i.getY()-j.getY();
+		//float dz = i.getZ()-j.getZ();
+		return this.COLUMBFORCECONSTANT*sqrt(dx*dx+dy*dy);//+dz*dz
+	}
+	
+	void updateForces() {
+		Set<Node> nodes; 
+		Object[] nodesA;
+		float totalkineticenergy = 0;
+		float damping = 0;
+		//TODO set better value 
+		while (totalkineticenergy > 1) {
+			nodes = graph.vertexSet();
+			nodesA = nodes.toArray();
+			for (int i = 0; i< nodesA.length; i++) {
+				Node node = (Node) nodesA[i];
+				nodes.remove(nodesA[i]);
+				float netforce=0;
+				for (Node onode: nodes) {
+					netforce = coulumb_force(onode, node);
+				}
+				
+				//hoook-power!!
+				
+				
+				node.setVelocity( (node.getVelocity() + netforce)*damping);
+				
+				node.adaptPositions();
+				
+				totalkineticenergy += Math.pow(node.getVelocity(),2);
+				
+				nodes.add((Node)nodesA[i]);
+			}
+			
+			
+		}
 	}
 
 	public void setup() {
@@ -69,7 +111,7 @@ public class Main extends PApplet {
 		
 		stroke(255);
 		strokeWeight(2);
-		
+		updateForces();
 		for(DefaultEdge edge : graph.edgeSet()) {
 			Node src = graph.getEdgeSource(edge);
 			Node tgt = graph.getEdgeTarget(edge);
