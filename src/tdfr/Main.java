@@ -6,6 +6,7 @@ import org.jgrapht.graph.SimpleGraph;
 
 import processing.core.*;
 import processing.opengl.*;
+import tdfr.graph.Graph;
 import tdfr.importer.JsonImporter;
 
 import java.util.Vector;
@@ -17,26 +18,10 @@ import javax.vecmath.Point3d;
 
 public class Main extends PApplet {
 
-	AbstractGraph<Node, DefaultEdge> graph;
-	
-	private static final long serialVersionUID = 1L;
-	
+	Graph graph;
+		
 	public void setupGraph() {
 		graph = (new JsonImporter()).loadFile("data/jsonex.json");		
-
-		/*graph = new SimpleGraph<Node, DefaultEdge>(DefaultEdge.class);
-		Random rand = new Random();
-		for (int i =0; i <10; i++) {
-		Node node1 = new Node(rand.nextFloat()*400, rand.nextFloat()*400, rand.nextFloat()*400);
-		graph.addVertex(node1);
-		}
-
-		Set<Node> nodes = graph.vertexSet();
-		Object[] nodesA = nodes.toArray();
-		for (int i = 0; i< 10; i++) {
-			graph.addEdge((Node) nodesA[rand.nextInt(10)], (Node) nodesA[rand.nextInt(10)]);
-		}*/
-
 	}
 	
 	private float COLUMBFORCECONSTANT=1;
