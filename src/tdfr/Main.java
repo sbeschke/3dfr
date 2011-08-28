@@ -8,6 +8,7 @@ import controlP5.ControlP5;
 
 import processing.core.*;
 import processing.opengl.*;
+import remixlab.proscene.Scene;
 import tdfr.graph.Graph;
 import tdfr.importer.JsonImporter;
 
@@ -31,6 +32,7 @@ public class Main extends PApplet {
 
 	private Graph graph;
 	private ControlP5 controlP5;
+	private Scene scene;
 		
 	public static void main(String[] args) {
 		PApplet.main(new String[] { "tdfr.Main" });
@@ -125,6 +127,7 @@ public class Main extends PApplet {
 		size(400,400, OPENGL);
 		background(0);
 		
+		
 		try { 
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); 
 		} catch (Exception e) { 
@@ -134,6 +137,8 @@ public class Main extends PApplet {
 		controlP5 = new ControlP5(this);
 		controlP5.addButton("loadButton");
 		graph = new Graph();
+		scene = new Scene(this);
+		scene.setGridIsDrawn(false);
 	}
 	
 	public void draw() 
@@ -159,20 +164,18 @@ public class Main extends PApplet {
 			Edge edge = (Edge) iter.next();
 			line(edge.start.x, edge.start.y, edge.start.z, edge.end.x, edge.end.y, edge.end.z);*/
 
-			
-		background(0);
 		
+		background(0);		
 		stroke(255);
 		strokeWeight(2);
 		for(Edge edge : graph.edgeSet()) {
 			Node src = graph.getEdgeSource(edge);
 			Node tgt = graph.getEdgeTarget(edge);
 			
-			line(src.getX(), src.getY(), 0, tgt.getX(), tgt.getY(), 0);
+			line(src.getX(), src.getY(), src.getZ(), tgt.getX(), tgt.getY(), tgt.getZ());
 			
 		}
 		updateForces();
-
 	}
 
 	/*public void mouseDragged() 

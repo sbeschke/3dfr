@@ -6,9 +6,13 @@ import javax.vecmath.Point3d;
 
 public class Node {
 	private float x = 0;
+	private float y = 0;
+	private float z = 0;
+	
 	private Point3d velocity = new Point3d(0,0,0);
 	
 	private Vector<Edge> edges;
+	
 	
 	public void addToVelocity(Point3d hook) {
 		velocity.add((Tuple3d)hook);
@@ -46,8 +50,6 @@ public class Node {
 		this.x = x;
 	}
 
-	private float y = 0;
-	
 	public float getY() {
 		return y;
 	}
@@ -56,7 +58,6 @@ public class Node {
 		this.y = y;
 	}
 	
-	private float z = 0;
 	public void setZ(float z) {
 		this.z = z;
 	}
