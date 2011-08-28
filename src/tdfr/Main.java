@@ -137,8 +137,8 @@ public class Main extends PApplet {
 		controlP5 = new ControlP5(this);
 		controlP5.addButton("loadButton");
 		graph = new Graph();
-		scene = new Scene(this);
-		scene.setGridIsDrawn(false);
+		scene = new GraphScene(this, graph);
+		
 	}
 	
 	public void draw() 
@@ -165,17 +165,8 @@ public class Main extends PApplet {
 			line(edge.start.x, edge.start.y, edge.start.z, edge.end.x, edge.end.y, edge.end.z);*/
 
 		
-		background(0);		
-		stroke(255);
-		strokeWeight(2);
-		for(Edge edge : graph.edgeSet()) {
-			Node src = graph.getEdgeSource(edge);
-			Node tgt = graph.getEdgeTarget(edge);
-			
-			line(src.getX(), src.getY(), src.getZ(), tgt.getX(), tgt.getY(), tgt.getZ());
-			
-		}
 		updateForces();
+
 	}
 
 	/*public void mouseDragged() 
