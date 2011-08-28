@@ -13,4 +13,11 @@ public class Edge extends DefaultEdge {
 		return length;
 	}
 	
+	 public Point3d getVecLength()
+     {
+             Point3d vecLength = new Point3d(((Node)getSource()).getCoordinates());
+             vecLength.sub(((Node)getTarget()).getCoordinates());
+             return vecLength;
+     }
+
 }

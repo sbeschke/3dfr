@@ -29,6 +29,10 @@ public class Node {
 		return new Point3d(x,y,z);
 	}
 	
+	public void slowDown(float damping) {
+		velocity.scale(damping);
+	}
+	
 	public void setVelocity(Point3d velocity) {
 		this.velocity= velocity;
 	}
