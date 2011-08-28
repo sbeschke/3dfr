@@ -4,27 +4,39 @@ import org.jgrapht.graph.AbstractGraph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
 
+import controlP5.ControlP5;
+
 import processing.core.*;
 import processing.opengl.*;
 import tdfr.graph.Graph;
 import tdfr.importer.JsonImporter;
 
+import java.awt.FileDialog;
+import java.awt.Frame;
+import java.io.File;
 import javax.vecmath.Point3d;
 import javax.vecmath.Tuple3d;
 import java.util.Vector;
 import java.util.Set;
 import java.util.Random;
 import java.util.ListIterator;
+
+import javax.swing.JFileChooser;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.vecmath.Point3d;
 //http://mirrors.ibiblio.org/pub/mirrors/maven/java3d/jars/vecmath-1.3.1.jar
 
 public class Main extends PApplet {
 
-	Graph graph;
+	private Graph graph;
+	private ControlP5 controlP5;
 		
-	public void setupGraph() {
-		graph = (new JsonImporter()).loadFile("../data/sotu_small.json");		
+	public static void main(String[] args) {
+		PApplet.main(new String[] { "tdfr.Main" });
 	}
 	
+
 	private double COLUMBFORCECONSTANT=1000d;
 	private float FEDERCONSTANT=0.02f;
 	
@@ -58,14 +70,16 @@ public class Main extends PApplet {
 		direction.scale(FEDERCONSTANT);
 		return direction;
 	}
+
 	
 	void updateForces() {
 		Set<Node> nodes; 
 		Object[] nodesA;
-		//Set<Edge> edges = graph.edgeSet();
+		Set<Edge> edges = graph.edgeSet();
 		Point3d totalkineticenergy = new Point3d( 0, 0, 0);
 		//damping \in 0;1
 		float damping = 0.1f;
+
 		//TODO set better value 
 		while (totalkineticenergy.x < 100) {
 
@@ -99,6 +113,7 @@ public class Main extends PApplet {
 //				totalkineticenergy.scaleAdd((double) 0.000001, node.getCoordinates());
 //				System.out.println("working: " + totalkineticenergy);
 //				//nodes.add((Node)nodesA[i]);
+
 			}
 			
 			
@@ -109,7 +124,16 @@ public class Main extends PApplet {
 		
 		size(400,400, OPENGL);
 		background(0);
-		setupGraph();
+		
+		try { 
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); 
+		} catch (Exception e) { 
+			e.printStackTrace();  
+		}
+		
+		controlP5 = new ControlP5(this);
+		controlP5.addButton("loadButton");
+		graph = new Graph();
 	}
 	
 	public void draw() 
@@ -151,6 +175,30 @@ public class Main extends PApplet {
 
 	}
 
+	/*public void mouseDragged() 
+	{
+	  value = value + 5;
+	  if (value > 200) {
+	    value = 0;
+	  }
+	}*/
+	
+	public void loadButton(int theValue) {
+		
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			public void run() {
+				noLoop();
+				
+				FileDialog fc = new FileDialog((Frame)null);
+				fc.setVisible(true);
+				File file = new File(fc.getDirectory(), fc.getFile());
+				(new JsonImporter()).loadFile(file, graph);
+				
+				loop();
+			}
+		});
+	}
 	
 		
 }

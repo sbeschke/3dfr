@@ -1,5 +1,6 @@
 package tdfr.importer;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -13,13 +14,12 @@ import tdfr.Node;
 import tdfr.graph.Graph;
 
 public class JsonImporter {
-	public Graph loadFile(String fileName) {
-		Graph graph = new Graph();
+	public Graph loadFile(File file, Graph graph) {
 		JSONParser parser = new JSONParser();
 		JsonImporterHandler handler = new JsonImporterHandler(graph);
 		FileReader reader;
 		try {
-			reader = new FileReader(fileName);
+			reader = new FileReader(file);
 			parser.parse(reader, handler);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -34,8 +34,6 @@ public class JsonImporter {
 		
 		Random rand = new Random();
 		Set<Node> nodes = graph.vertexSet();
-		
-		System.out.println(nodes.size());
 		
 		for(Node n : nodes) {
 			n.setX(rand.nextFloat()*400);

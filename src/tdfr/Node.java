@@ -28,8 +28,9 @@ public class Node {
 	public Point3d getCoordinates() {
 		return new Point3d(x,y,z);
 	}
-	public void slowDown(float damping)
-	{
+
+	
+	public void slowDown(float damping) {
 		velocity.scale(damping);
 	}
 	

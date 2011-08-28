@@ -1,6 +1,6 @@
 package tdfr.graph;
 
-import org.jgrapht.graph.DefaultEdge;
+import tdfr.Edge;
 
 public class Graph extends org.jgrapht.graph.DirectedMultigraph<tdfr.Node, tdfr.Edge> {
 
