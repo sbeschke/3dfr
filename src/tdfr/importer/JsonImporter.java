@@ -40,7 +40,7 @@ public class JsonImporter {
 		for(Node n : nodes) {
 			n.setX(rand.nextFloat()*400);
 			n.setY(rand.nextFloat()*400);
-			n.setZ(rand.nextFloat()*400);
+			n.setZ(rand.nextFloat()*-400);
 		}
 
 		Object[] nodesA = nodes.toArray();
