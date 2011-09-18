@@ -1,12 +1,12 @@
-package tdfr.importer;
+package tdfr.twitter.importer;
 
 import java.io.IOException;
 
 import org.json.simple.parser.ContentHandler;
 import org.json.simple.parser.ParseException;
 
-import tdfr.Node;
-import tdfr.graph.Graph;
+import tdfr.base.graph.Graph;
+import tdfr.base.graph.Node;
 
 public class JsonImporterHandler implements ContentHandler {
 

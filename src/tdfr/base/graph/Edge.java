@@ -1,4 +1,4 @@
-package tdfr;
+package tdfr.base.graph;
 
 import org.jgrapht.graph.DefaultEdge;
 import javax.vecmath.Point3d;

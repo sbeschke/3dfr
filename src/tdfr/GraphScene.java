@@ -2,7 +2,9 @@ package tdfr;
 
 import processing.core.PApplet;
 import remixlab.proscene.Scene;
-import tdfr.graph.Graph;
+import tdfr.base.graph.Edge;
+import tdfr.base.graph.Graph;
+import tdfr.base.graph.Node;
 
 public class GraphScene extends Scene {
 

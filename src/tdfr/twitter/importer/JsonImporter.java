@@ -1,4 +1,4 @@
-package tdfr.importer;
+package tdfr.twitter.importer;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,11 +10,16 @@ import java.util.Set;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import tdfr.Node;
-import tdfr.graph.Graph;
+import tdfr.base.graph.Graph;
+import tdfr.base.graph.Node;
 
-public class JsonImporter {
-	public Graph loadFile(File file, Graph graph) {
+public class JsonImporter implements tdfr.base.importer.Importer {
+	public JsonImporter(File file) {
+		this.file = file;
+	}
+	
+	@Override
+	public void run(Graph graph) {
 		JSONParser parser = new JSONParser();
 		JsonImporterHandler handler = new JsonImporterHandler(graph);
 		FileReader reader;
@@ -48,7 +53,7 @@ public class JsonImporter {
 					(Node) nodesA[rand.nextInt(size)],
 					(Node) nodesA[rand.nextInt(size)]);
 		}
-		
-		return graph;
 	}
+	
+	private File file;
 }

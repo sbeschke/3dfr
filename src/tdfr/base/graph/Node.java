@@ -1,4 +1,4 @@
-package tdfr;
+package tdfr.base.graph;
 
 import java.util.Vector;
 import javax.vecmath.Tuple3d;

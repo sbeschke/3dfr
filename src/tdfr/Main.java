@@ -9,8 +9,12 @@ import controlP5.ControlP5;
 import processing.core.*;
 import processing.opengl.*;
 import remixlab.proscene.Scene;
-import tdfr.graph.Graph;
-import tdfr.importer.JsonImporter;
+import tdfr.base.graph.Edge;
+import tdfr.base.graph.Graph;
+import tdfr.base.graph.Node;
+import tdfr.base.importer.Importer;
+import tdfr.gui.ControlFrame;
+import tdfr.twitter.importer.JsonImporter;
 
 import java.awt.FileDialog;
 import java.awt.Frame;
@@ -23,6 +27,8 @@ import java.util.Random;
 import java.util.ListIterator;
 
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JWindow;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.vecmath.Point3d;
@@ -36,6 +42,11 @@ public class Main extends PApplet {
 		
 	public static void main(String[] args) {
 		PApplet.main(new String[] { "tdfr.Main" });
+	}
+	
+	public Main() {
+		JFrame controlFrame = new ControlFrame(this);
+		controlFrame.setVisible(true);
 	}
 	
 
@@ -123,19 +134,16 @@ public class Main extends PApplet {
 	}
 
 	public void setup() {
-		
 		size(400,400, OPENGL);
-		background(0);
-		
+		background(0);		
 		
 		try { 
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); 
 		} catch (Exception e) { 
 			e.printStackTrace();  
 		}
+
 		
-		controlP5 = new ControlP5(this);
-		controlP5.addButton("loadButton");
 		graph = new Graph();
 		scene = new GraphScene(this, graph);
 		
@@ -187,12 +195,17 @@ public class Main extends PApplet {
 				FileDialog fc = new FileDialog((Frame)null);
 				fc.setVisible(true);
 				File file = new File(fc.getDirectory(), fc.getFile());
-				(new JsonImporter()).loadFile(file, graph);
+				//(new JsonImporter()).loadFile(file, graph);
 				
 				loop();
 			}
 		});
 	}
 	
-		
+	public void importFrom(Importer importer) {
+		noLoop();
+		importer.run(graph);
+		loop();
+	}
+	
 }
